@@ -50,7 +50,7 @@ post '/posts' do
 end
 
 get '/posts' do
-  { posts: Post.all.as_json }.to_json
+  { posts: Post.all.desc(:updated_at).as_json }.to_json
 end
 
 get '/posts/:post_id' do
