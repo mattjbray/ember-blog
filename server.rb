@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'mongoid'
-require 'pp'
 
 module Mongoid
   module Serialization
@@ -13,7 +12,9 @@ module Mongoid
   end
 end
 
-Mongoid.load!('config/mongoid.yml')
+Mongoid.configure do |config|
+  config.connect_to( ENV['MONGOHQ_URL'] || 'ember_blog' )
+end
 
 class Post
   include Mongoid::Document
@@ -28,8 +29,6 @@ class Post
   validates :intro, presence: true
   validates :extended, presence: true
 end
-
-#Post.delete_all
 
 get '/' do
   send_file File.join(settings.public_folder, 'index.html')

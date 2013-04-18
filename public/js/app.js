@@ -4,9 +4,7 @@ App = Ember.Application.create();
 
 App.Store = DS.Store.extend({
   revision: 12,
-  adapter: DS.RESTAdapter.extend({
-    url: 'http://localhost:4567'
-  })
+  adapter: 'DS.RESTAdapter'
 });
 
 App.Post = DS.Model.extend({
