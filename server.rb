@@ -16,6 +16,8 @@ Mongoid.configure do |config|
   config.connect_to( ENV['MONGOHQ_URL'] || 'ember_blog' )
 end
 
+Mongoid.load!('./config/mongoid.yml')
+
 class Post
   include Mongoid::Document
   include Mongoid::Timestamps
