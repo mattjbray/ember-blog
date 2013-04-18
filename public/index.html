@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ember Blog</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <script type="text/x-handlebars">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">TuteMate</a>
+        <ul class="nav">
+        <li>{{#linkTo 'posts'}}Posts{{/linkTo}}</li>
+          <li>{{#linkTo 'posts.new'}}New{{/linkTo}}</li>
+        </ul>
+      </div>
+    </div>
+
+    {{outlet}}
+  </script>
+
+  <script type="text/x-handlebars" id="posts">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <table class="table">
+            <thead>
+              <tr><th>Recent Posts</th></tr>
+            </thead>
+            {{#each model}}
+              {{#unless this.isNew}}
+                <tr><td>
+                  {{#linkTo 'post' this}}{{title}} <small class="muted">by {{author}}</small>{{/linkTo}}
+                </td></tr>
+              {{/unless}}
+            {{/each}}
+          </table>
+        </div>
+        {{outlet}}
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="post">
+    {{partial 'post/show'}}
+
+    <div class="span3">
+      {{#if isEditing}}
+        {{partial 'post/edit'}}
+        <button {{action 'doneEditing'}} class="btn btn-primary">Save</button>
+        <button {{action 'cancelEditing'}} class="btn btn-danger">Cancel</button>
+      {{else}}
+        <button {{action 'edit'}} class='btn btn-primary'>Edit</button>
+        <button {{action 'delete'}} class='btn btn-danger'>Delete</button>
+      {{/if}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="post/_edit">
+    <div {{bindAttr class=":control-group errors.title:error"}}>
+      <div class="controls">
+        {{view Ember.TextField valueBinding='title' placeholder='Enter a title'}}
+      </div>
+    </div>
+    <div {{bindAttr class=":control-group errors.intro:error"}}>
+      <div class="controls">
+        {{view Ember.TextArea valueBinding='intro' placeholder='Enter an intro'}}
+      </div>
+    </div>
+    <div {{bindAttr class=":control-group errors.extended:error"}}>
+      <div class="controls">
+        {{view Ember.TextArea valueBinding='extended' placeholder='Enter the extended post'}}
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="post/_show">
+    <div class="span6">
+      {{#if title}}
+        <h1>{{title}}</h1>
+      {{/if}}
+
+      {{#if author}}
+        <h2>by {{author}} <small class="muted">({{date updatedAt}})</small></h2>
+        <hr>
+      {{/if}}
+
+      {{#if intro}}
+        <div class="intro lead">
+          {{markdown intro}}
+        </div>
+      {{/if}}
+
+      {{#if extended}}
+        <div class="below-the-fold">
+          {{markdown extended}}
+        </div>
+      {{/if}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="posts/new">
+    {{partial "post/show"}}
+
+    <div class="span3">
+      <div {{bindAttr class=":control-group errors.title:error"}}>
+        <div class="controls">
+          {{view Ember.TextField valueBinding='title' placeholder='Enter a title'}}
+        </div>
+      </div>
+      <div {{bindAttr class=":control-group errors.author:error"}}>
+        <div class="controls">
+          {{view Ember.TextField valueBinding='author' placeholder='Enter your name'}}
+        </div>
+      </div>
+      <div {{bindAttr class=":control-group errors.intro:error"}}>
+        <div class="controls">
+          {{view Ember.TextArea valueBinding='intro' placeholder='Enter an intro'}}
+        </div>
+      </div>
+      <div {{bindAttr class=":control-group errors.extended:error"}}>
+        <div class="controls">
+          {{view Ember.TextArea valueBinding='extended' placeholder='Enter the extended post'}}
+        </div>
+      </div>
+      <button {{action save}} class="btn btn-primary">Post</button>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="posts/index">
+    <p class="text-warning">Please select a post or
+              {{#linkTo 'posts.new'}}create one{{/linkTo}}.</p>
+  </script>
+
+  <script src="js/libs/jquery-1.9.1.js"></script>
+  <script src="js/libs/handlebars-1.0.0-rc.3.js"></script>
+  <script src="js/libs/ember-1.0.0-rc.2.js"></script>
+  <script src="js/libs/ember-data.js"></script>
+  <script src="js/libs/moment.js"></script>
+  <script src="js/libs/showdown.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

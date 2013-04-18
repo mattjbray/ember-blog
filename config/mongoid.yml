@@ -1,0 +1,6 @@
+development:
+  sessions:
+    default:
+      database: ember_blog
+      hosts:
+        - localhost:27017
